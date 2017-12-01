@@ -1,0 +1,32 @@
+---
+- name: Install Packages
+  xbps:
+    pkg: influxdb
+    state: present
+
+- name: Configure Firewall
+  template:
+    src: influxdb.rules.j2
+    dest: /etc/iptables.d/influxdb.rules
+    owner: root
+    group: root
+    mode: 0640
+  notify:
+    - iptables
+  when: influxdb.remote_sources is defined
+
+- name: Configure Daemon
+  template:
+    src: influxdb.conf.j2
+    dest: /etc/influxdb/influxdb.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - influxdb
+
+- name: Enable Service
+  runit:
+    name: influxdb
+    enabled: true
+    state: started

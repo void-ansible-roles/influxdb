@@ -1,0 +1,12 @@
+reporting-disabled = {{ influxdb.reporting_disabled | default(true) | ternary("true", "false") }}
+bind-address = "127.0.0.1:8088"
+
+[meta]
+  dir = "/var/lib/influxdb/meta"
+
+[data]
+  dir = "/var/lib/influxdb/data"
+  wal-dir = "/var/lib/influxdb/wal"
+
+[http]
+  bind-address = "{{ influxdb.bind_address | default(None) }}:8086"

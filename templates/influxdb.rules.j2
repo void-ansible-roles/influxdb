@@ -1,0 +1,5 @@
+*filter
+{% for host in influxdb.remote_sources %}
+-A INPUT -p tcp -s {{ host }} --dport 8086 -j ACCEPT
+{% endfor %}
+COMMIT
